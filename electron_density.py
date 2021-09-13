@@ -25,6 +25,7 @@ while inp_line:
     input_file_name = input_f.readline()
     inp_line = input_f.readline()
     ##########
+
     # Запись названий в выходные файлы
     data_C_f.write('\n' + out_file_name + '\n')
     data_H_f.write('\n' + out_file_name + '\n')
