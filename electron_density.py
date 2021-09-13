@@ -366,8 +366,7 @@ while inp_line:
 
 
     def func(x, y, z):
-        """returns a column of function values for molecule at a point (x,y,z)
-        """
+        """returns a column of function values for molecule at a point (x,y,z)"""
         mass = np.zeros((N, 1), float)
         for j in range(0, c):
             m = cfunc(x - inp[j][0], y - inp[j][1], z - inp[j][2])
@@ -392,51 +391,8 @@ while inp_line:
 
     # Фукция для численного интегрирования корень из плотность умножить на базисную функцию
 
-    ##    def integralA(i):
-    ##        summ=0
-    ##        Np=10              #чило точек на оси при интегрировании
-    ##        p1=np.min(inp)     #начало и конец интегрирования
-    ##        p1-=1
-    ##        p2=np.max(inp)
-    ##        p2+=1
-    ##        e=(p2-p1)/Np
-    ##        for x in np.arange(p1,p2,e):
-    ##            for y in np.arange(p1,p2,e):
-    ##                for z in np.arange(p1,p2,e):
-    ##                    f=func(x,y,z)
-    ##                    m=np.matmul(np.transpose(f),const)
-    ##                    n=2*np.linalg.norm(m)**2
-    ##                    summ=summ+(math.sqrt(n)*f[i])*e**3
-    ##        return summ
-
-    ##    def integralA(i):
-    ##        summ=0
-    ##        Np=100              #чило точек на оси при интегрировании
-    ##        p1x=np.min(inp[:,0])
-    ##        p1x-=3
-    ##        p2x=np.max(inp[:,0])
-    ##        p2x+=3
-    ##        ex=(p2x-p1x)/Np
-    ##        p1y=np.min(inp[:,1])
-    ##        p1y-=3
-    ##        p2y=np.max(inp[:,1])
-    ##        p2y+=3
-    ##        ey=(p2y-p1y)/Np
-    ##        p1z=np.min(inp[:,2])
-    ##        p1z-=3
-    ##        p2z=np.max(inp[:,2])
-    ##        p2z+=3
-    ##        ez=(p2z-p1z)/Np
-    ##        for x in np.arange(p1x,p2x,ex):
-    ##            for y in np.arange(p1y,p2y,ey):
-    ##                for z in np.arange(p1z,p2z,ez):
-    ##                    f=func(x,y,z)
-    ##                    m=np.matmul(np.transpose(f),const)
-    ##                    n=2*np.linalg.norm(m)**2
-    ##                    summ=summ+(math.sqrt(n)*f[i])*ex*ey*ez
-    ##        return summ
-
     def integralA(N):
+        """numerical integration"""
         q = 0
         A = np.zeros((N, 1), float)
         Np = 20  # чило точек на оси при интегрировании
@@ -470,6 +426,7 @@ while inp_line:
 
     # Фукция для точного интегрирования произведения базисных функций
     def integralB(i, k):
+        """precise integration"""
         s = 0
         numb1 = int(i // 15)
         if (numb1 > (c - 1)):
@@ -825,14 +782,11 @@ while inp_line:
 
 
     ##    #А-столбец численных интегралов
-    ##    A=np.zeros((N,1),float)
-    ##    for i in range(0,N):
-    ##        A[i][0]=integralA(i)
-    ##        print("A",i,A[i][0])
     A = integralA(N)
 
     # В-матрица точных итегралов
     B = np.zeros((N, N), float)
+
     for i in range(0, N):
         for j in range(0, i + 1):
             B[i][j] = integralB(i, j)
@@ -840,11 +794,6 @@ while inp_line:
     for i in range(0, N - 1):
         for j in range(i + 1, N):
             B[i][j] = B[j][i]
-    ##    B=np.zeros((N,N),float)
-    ##    for i in range(0,N):
-    ##        for j in range(0,N):
-    ##            B[i][j]=integralB(i,j)
-    ##            print('B',i,j,B[i][j])
 
     # C-стобец констант разложения в базис
     C = np.linalg.solve(B, A)
